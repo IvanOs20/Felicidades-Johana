@@ -10,44 +10,70 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-bM2X8fR3YI9Kp1Tn/2+6aOw1qfaHmKc2lz9C+8mPdmtfpR5nVgMvxuLd93ob5M8VxAgbMjP3Tr4hK+r3X2/j9Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Font Awesome para iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pc6vH3f+R+v9UzpqzUQ5IeWzOFRJkA29P0xA66AOtYKy8+2JEpYWVz0aFaX+KyvHFLFkZrdd2/2W8Cmda1nU3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif;
-      /* Fondo princesa: degradado rosa/lavanda */
       background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
       color: #fff;
     }
-    .slide { position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column;
-      justify-content: center; align-items: center; padding: 1rem; text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+    .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: none; flex-direction: column; justify-content: center; align-items: center;
+      padding: 1rem; text-shadow: 0 1px 4px rgba(0,0,0,0.7);
     }
-    .hidden { display: none; }
-    h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+    .slide.active { display: flex; }
+    h1 { font-size: 3rem; margin-bottom: 0.5rem; position: relative; }
     p { font-size: 1.2rem; margin-bottom: 1rem; max-width: 80%; text-align: center; line-height: 1.4; }
     .btn-next { padding: 0.8rem 1.5rem; font-size: 1rem; border: none; border-radius: 50px;
-      cursor: pointer; background: #ff6b81; color: #fff;
-      box-shadow: 0 4px 12px rgba(255,107,129,0.5); transition: transform 0.2s;
+      cursor: pointer; background: #ff4757; color: #fff; box-shadow: 0 4px 12px rgba(255,71,87,0.5);
+      transition: transform 0.2s;
     }
     .btn-next:hover { transform: scale(1.05); }
     small { position: absolute; bottom: 1rem; font-size: 0.8rem; opacity: 0.7; }
     canvas.confetti { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
     /* Estrellas brillantes */
-    .star { position: absolute; font-size: 1.5rem; color: #fff; opacity: 0.8; }
+    .star { position: absolute; font-size: 1.5rem; color: #fff; opacity: 0.8;
+      animation: sparkle 2s infinite ease-in-out;
+    }
     @keyframes sparkle {
       0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
       50% { opacity: 0.3; transform: scale(1.5) rotate(45deg); }
     }
-    .star { animation: sparkle 2s infinite ease-in-out; }
+
+    /* Flotación princesa */
+    .floating { animation: float 3s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Corazones ascendentes */
+    .heart { position: absolute; font-size: 1.2rem; color: #ff6b81; opacity: 0.9;
+      animation: rise 4s ease-in infinite;
+    }
+    @keyframes rise {
+      0% { bottom: 10%; opacity: 0.9; transform: translateX(0); }
+      100% { bottom: 80%; opacity: 0; transform: translateX(20px); }
+    }
   </style>
 </head>
 <body>
   <!-- Estrellas decorativas -->
-  <i class="fas fa-star star" style="top:10%; left:20%; animation-delay:0s"></i>
-  <i class="fas fa-star star" style="top:30%; left:80%; animation-delay:1s"></i>
-  <i class="fas fa-star star" style="top:70%; left:40%; animation-delay:0.5s"></i>
+  <i class="fas fa-star star" style="top:10%; left:20%;"></i>
+  <i class="fas fa-star star" style="top:30%; left:80%; animation-delay:0.5s"></i>
+  <i class="fas fa-star star" style="top:70%; left:40%; animation-delay:1s"></i>
   <i class="fas fa-star star" style="top:50%; left:60%; animation-delay:1.5s"></i>
 
+  <!-- Corazones ascendentes -->
+  <i class="fas fa-heart heart" style="left:30%; animation-delay:0s"></i>
+  <i class="fas fa-heart heart" style="left:50%; animation-delay:1s"></i>
+  <i class="fas fa-heart heart" style="left:70%; animation-delay:2s"></i>
+
   <!-- Slide 1 -->
-  <div id="slide1" class="slide animate__animated animate__fadeIn">
+  <div id="slide1" class="slide active">
+    <!-- Corona flotante -->
+    <i class="fas fa-crown floating" style="position:absolute; top:15%; font-size:2rem; color:#ffeaa7;"></i>
     <i class="fas fa-graduation-cap fa-4x animate__animated animate__bounceIn" style="margin-bottom:1rem; color: #ff6b81;"></i>
     <h1 class="animate__animated animate__heartBeat animate__delay-1s">Felicidadessss, Johana 🎉</h1>
     <p class="animate__animated animate__fadeInUp animate__delay-2s">tqm ❤️<br>Sé que no pudiste asistir a tu graduación,<br>pero sé lo importante que es este día.</p>
@@ -55,18 +81,18 @@
   </div>
 
   <!-- Slide 2 -->
-  <div id="slide2" class="slide hidden">
+  <div id="slide2" class="slide">
     <i class="fas fa-trophy fa-4x animate__animated animate__zoomIn" style="margin-bottom:1rem; color: #ffa502;"></i>
-    <h1>¡Lo lograste!</h1>
-    <p>Superaste la prepa con todo.<br>Este es solo el primero de muchos logros.</p>
+    <h1 class="animate__animated animate__fadeInDown">¡Lo lograste!</h1>
+    <p class="animate__animated animate__fadeInUp animate__delay-1s">Superaste la prepa con todo.<br>Este es solo el primero de muchos logros.</p>
     <button class="btn-next" onclick="nextSlide()">Siguiente</button>
   </div>
 
   <!-- Slide 3 -->
-  <div id="slide3" class="slide hidden">
+  <div id="slide3" class="slide">
     <i class="fas fa-meteor fa-4x animate__animated animate__rotateIn" style="margin-bottom:1rem; color: #3742fa;"></i>
-    <h1>¡A brillar siempre!</h1>
-    <p>El mundo te espera.<br>Sigue conquistando tu camino.</p>
+    <h1 class="animate__animated animate__fadeInDown">¡A brillar siempre!</h1>
+    <p class="animate__animated animate__fadeInUp animate__delay-1s">El mundo te espera.<br>Sigue conquistando tu camino.</p>
     <button class="btn-next" onclick="restart()">Reiniciar</button>
   </div>
 
@@ -78,24 +104,30 @@
   <script>
     const slides = ['slide1', 'slide2', 'slide3'];
     let current = 0;
+    // Confetti setup
     const confettiCanvas = document.getElementById('confettiCanvas');
     const confettiInstance = confetti.create(confettiCanvas, { resize: true });
     function launchConfetti() { confettiInstance({ particleCount: 150, spread: 200, origin: { y: 0.6 } }); }
+
     function showSlide(index) {
-      gsap.to(`#${slides[current]}`, { duration: 0.4, opacity: 0, y: -30, onComplete: () => {
-        document.getElementById(slides[current]).classList.add('hidden');
-        current = index;
-        const next = document.getElementById(slides[current]);
-        next.classList.remove('hidden');
-        gsap.fromTo(next, { opacity: 0, y: 30 }, { duration: 0.6, opacity: 1, y: 0 });
-        launchConfetti();
-      }});
+      // Oculta todas
+      slides.forEach((id, i) => {
+        const el = document.getElementById(id);
+        el.classList.remove('active');
+      });
+      // Muestra la solicitada
+      const next = document.getElementById(slides[index]);
+      next.classList.add('active');
+      gsap.fromTo(next, { opacity: 0, y: 30 }, { duration: 0.6, opacity: 1, y: 0 });
+      launchConfetti();
+      current = index;
     }
+
     function nextSlide() { showSlide((current + 1) % slides.length); }
     function restart() { showSlide(0); }
+
     window.addEventListener('load', () => {
-      gsap.fromTo('#slide1', { opacity: 0, scale: 0.9 }, { duration: 0.8, opacity: 1, scale: 1, ease: 'back.out(1.5)' });
-      launchConfetti();
+      showSlide(0);
     });
   </script>
 </body>
